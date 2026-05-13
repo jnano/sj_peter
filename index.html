@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>세종성베드로성당 홈페이지 운영 제안</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap">
+<style>
+  :root {
+    --ink: #1a2745;
+    --ink-soft: #3d4a66;
+    --muted: #8b8f9c;
+    --gold: #b8924a;
+    --gold-dark: #7a5f29;
+    --cream: #faf7f1;
+    --cream-deep: #f3eee2;
+    --line: #e8e3d6;
+    --bg: #fdfcf9;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400;
+    color: var(--ink-soft);
+    background: var(--bg);
+    line-height: 1.7;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /* 미세한 그레인 텍스처 */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ============= 공통 슬라이드 박스 ============= */
+  .slide {
+    max-width: 1180px;
+    margin: 0 auto 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+    position: relative;
+  }
+  .slide-num {
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    font-family: "Nanum Myeongjo", serif;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    z-index: 2;
+  }
+
+  /* 슬라이드 — 항상 보임. 어떤 JS도 슬라이드 표시를 방해하지 않음 */
+  .slide {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ============= 타이포그래피 ============= */
+  h1, h2 {
+    font-family: "Nanum Myeongjo", serif;
+    color: var(--ink);
+    line-height: 1.25;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  h1 {
+    font-size: 28px;
+    margin-bottom: 16px;
+    position: relative;
+    padding-top: 16px;
+  }
+  h1::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 32px;
+    height: 2px;
+    background: var(--gold);
+  }
+  strong { color: var(--gold-dark); font-weight: 700; }
+  p {
+    font-size: 16px;
+    line-height: 1.75;
+    margin: 10px 0;
+    color: var(--ink-soft);
+  }
+  ul { list-style: none; padding-left: 0; }
+  li {
+    font-size: 15px;
+    margin: 10px 0;
+    padding-left: 22px;
+    position: relative;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 13px;
+    width: 10px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  /* ============= 좌우 분할 레이아웃 ============= */
+  .split {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    min-height: 520px;
+  }
+  .split .left {
+    padding: 56px 40px 56px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .split .right {
+    background: var(--cream);
+    padding: 40px 48px 40px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid var(--line);
+    position: relative;
+  }
+  .split .right::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(184,146,74,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(26,39,69,0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  /* ============= 스크린샷 프레임 ============= */
+  .shot-frame {
+    width: 100%;
+    max-width: 360px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow:
+      0 4px 12px -6px rgba(26,39,69,0.12),
+      0 18px 40px -22px rgba(26,39,69,0.25);
+    position: relative;
+    z-index: 2;
+  }
+  .browser-bar {
+    background: linear-gradient(180deg, #f5f3ed 0%, #ebe7db 100%);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid var(--line);
+  }
+  .browser-bar .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #d4cfc0;
+  }
+  .browser-bar .dot.r { background: #c4574d; opacity: 0.55; }
+  .browser-bar .dot.y { background: #d4a73a; opacity: 0.55; }
+  .browser-bar .dot.g { background: #6b9b6b; opacity: 0.55; }
+  .browser-bar .url {
+    margin-left: 8px;
+    font-size: 10px;
+    color: var(--muted);
+    font-family: "Nanum Myeongjo", serif;
+    font-style: italic;
+  }
+  .shot-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: white;
+  }
+
+  /* ============= 단일 컬럼 ============= */
+  .single-col {
+    padding: 60px 72px;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* ============= 표지 ============= */
+  .cover .left { padding-left: 80px; }
+  .cover .eyebrow {
+    font-family: "Nanum Myeongjo", serif;
+    color: var(--gold);
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    font-weight: 700;
+    margin-bottom: 22px;
+  }
+  .cover h1 {
+    font-size: 44px;
+    line-height: 1.15;
+    padding-top: 0;
+  }
+  .cover h1::before { display: none; }
+  .cover .sub-title {
+    font-family: "Nanum Myeongjo", serif;
+    font-weight: 400;
+    font-size: 19px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .cover .divider {
+    width: 64px;
+    height: 2px;
+    background: var(--gold);
+    margin: 32px 0 24px;
+  }
+  .cover .lede {
+    font-size: 15px;
+    line-height: 1.75;
+    max-width: 460px;
+  }
+  .cover .meta {
+    font-family: "Nanum Myeongjo", serif;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    margin-top: 48px;
+  }
+  .cover-deco {
+    width: 100%;
+    max-width: 280px;
+  }
+  .cover-deco svg { width: 100%; height: auto; }
+
+  /* ============= 키 메시지 슬라이드 ============= */
+  .key-message {
+    background: var(--cream);
+    text-align: center;
+    padding: 80px 64px;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .key-message .mark {
+    font-family: "Nanum Myeongjo", serif;
+    color: var(--gold);
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    margin-bottom: 28px;
+    font-weight: 700;
+  }
+  .key-message .quote-text {
+    font-family: "Nanum Myeongjo", serif;
+    color: var(--ink);
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.5;
+    max-width: 800px;
+    letter-spacing: -0.02em;
+  }
+  .key-message .sub-line {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 28px;
+    max-width: 540px;
+    line-height: 1.7;
+  }
+
+  /* ============= 섹션 표지 ============= */
+  .section-cover {
+    background: var(--cream);
+    text-align: center;
+    padding: 80px 64px;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .section-cover .chapter-mark {
+    font-family: "Nanum Myeongjo", serif;
+    color: var(--gold);
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .section-cover h1 {
+    font-size: 36px;
+    padding-top: 0;
+  }
+  .section-cover h1::before { display: none; }
+  .section-cover .divider {
+    width: 64px;
+    height: 2px;
+    background: var(--gold);
+    margin: 24px 0;
+  }
+  .section-cover .sub {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 560px;
+  }
+
+  /* ============= STEP 배지 ============= */
+  .step-badge {
+    display: inline-block;
+    background: var(--ink);
+    color: white;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 12px;
+    vertical-align: middle;
+    letter-spacing: 0.15em;
+    border-radius: 2px;
+  }
+
+  /* ============= 4단계 그리드 ============= */
+  .flow-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 18px 0 14px;
+  }
+  .flow-item {
+    background: white;
+    border: 1px solid var(--line);
+    border-top: 2px solid var(--line);
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+    border-radius: 2px;
+  }
+  .flow-item.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    border-top-color: var(--gold);
+    color: white;
+    font-weight: 700;
+  }
+  .flow-item .num {
+    display: block;
+    font-family: "Nanum Myeongjo", serif;
+    font-size: 16px;
+    color: var(--gold);
+    margin-bottom: 2px;
+  }
+
+  /* ============= 6 기능 카드 ============= */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .feature-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 20px 18px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .feature-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px -18px rgba(26,39,69,0.2);
+  }
+  .feature-card:hover::before { transform: scaleX(1); }
+  .feature-card .num {
+    font-family: "Nanum Myeongjo", serif;
+    color: var(--gold);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .feature-card .name {
+    font-family: "Nanum Myeongjo", serif;
+    color: var(--ink);
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 6px;
+    line-height: 1.3;
+  }
+  .feature-card .desc {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 10px;
+    line-height: 1.55;
+  }
+
+  /* ============= 비교 그리드 ============= */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 22px;
+  }
+  .compare-col {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 20px 22px;
+  }
+  .compare-col.after {
+    background: var(--cream);
+    border-color: var(--gold);
+  }
+  .compare-col-label {
+    font-family: "Nanum Myeongjo", serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .compare-col.after .compare-col-label { color: var(--gold-dark); }
+  .compare-col li { font-size: 13px; margin: 8px 0; padding-left: 18px; }
+
+  /* ============= 카카오 단계 박스 ============= */
+  .kakao-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 22px;
+  }
+  .kakao-step {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 18px 14px;
+    text-align: center;
+  }
+  .kakao-step .n {
+    font-family: "Nanum Myeongjo", serif;
+    font-size: 24px;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .kakao-step .nm {
+    font-family: "Nanum Myeongjo", serif;
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+  .kakao-step .desc {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.55;
+  }
+
+  /* ============= 표 ============= */
+  table {
+    font-size: 13px;
+    border-collapse: collapse;
+    width: 100%;
+    background: white;
+    margin-top: 14px;
+  }
+  table th {
+    background: var(--cream);
+    color: var(--ink);
+    border-bottom: 2px solid var(--gold);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 700;
+    font-family: "Nanum Myeongjo", serif;
+  }
+  table td { padding: 10px 16px; border-bottom: 1px solid var(--line); }
+  table strong { color: var(--ink); font-family: "Nanum Myeongjo", serif; }
+
+  .small {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .small strong { color: var(--gold-dark); }
+
+  /* ============= 페이지 헤더 (전체 페이지 상단) ============= */
+  .page-header {
+    text-align: center;
+    padding: 32px 20px 8px;
+    background: var(--bg);
+  }
+  .page-header .title-mini {
+    font-family: "Nanum Myeongjo", serif;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+  }
+
+  /* ============= 페이지 푸터 ============= */
+  .page-footer {
+    text-align: center;
+    padding: 40px 20px 60px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* ============= 떠다니는 애니메이션 ============= */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+  .float-anim { animation: float 6s ease-in-out infinite; }
+  .pulse-anim { animation: pulse 2.5s ease-in-out infinite; }
+
+  /* ============================================ */
+  /* 태블릿 (601px ~ 1100px) — 폰트 보정          */
+  /* ============================================ */
+  @media (min-width: 601px) and (max-width: 1100px) {
+    .slide { max-width: 100%; }
+    .split .left { padding: 40px 28px 40px 48px; }
+    .split .right { padding: 30px 32px 30px 24px; }
+    .single-col { padding: 44px 56px; }
+    .cover .left { padding-left: 56px; }
+    .cover h1 { font-size: 36px; }
+    h1 { font-size: 24px; }
+    .key-message .quote-text { font-size: 26px; }
+    .section-cover h1 { font-size: 30px; }
+    .shot-frame { max-width: 320px; }
+  }
+
+  /* ============================================ */
+  /* 모바일 (600px 이하) — 세로 쌓기                */
+  /* ============================================ */
+  @media (max-width: 600px) {
+    body { font-size: 14px; }
+    .slide {
+      max-width: 100%;
+      margin: 0 0 16px;
+      border-bottom: 1px solid var(--line);
+    }
+    .slide-num {
+      top: 12px;
+      right: 16px;
+      font-size: 10px;
+    }
+
+    /* 좌우 분할 → 세로 쌓기 */
+    .split {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
+      min-height: auto;
+    }
+    .split .left {
+      padding: 32px 24px 20px;
+    }
+    .split .right {
+      padding: 20px 24px 32px;
+      border-left: none;
+      border-top: 1px solid var(--line);
+    }
+    .cover .left { padding-left: 24px; }
+
+    /* 표지 텍스트 */
+    .cover h1 { font-size: 28px; }
+    .cover .sub-title { font-size: 16px; }
+    .cover .lede { font-size: 14px; max-width: 100%; }
+    .cover .meta { margin-top: 28px; }
+    .cover-deco { max-width: 200px; }
+
+    h1 { font-size: 20px; padding-top: 14px; }
+    p { font-size: 14px; }
+    li { font-size: 13px; padding-left: 18px; }
+
+    /* 단일 컬럼 */
+    .single-col {
+      padding: 32px 24px;
+      min-height: auto;
+    }
+
+    /* 키 메시지 */
+    .key-message {
+      padding: 48px 28px;
+      min-height: auto;
+    }
+    .key-message .quote-text { font-size: 21px; line-height: 1.5; }
+    .key-message .sub-line { font-size: 12px; margin-top: 18px; }
+
+    /* 섹션 표지 */
+    .section-cover {
+      padding: 48px 28px;
+      min-height: auto;
+    }
+    .section-cover h1 { font-size: 24px; }
+    .section-cover .sub { font-size: 13px; }
+
+    /* 스크린샷 — 폭 화면에 꽉 차게 */
+    .shot-frame {
+      max-width: 100%;
+      width: 100%;
+    }
+    .shot-frame img {
+      width: 100%;
+      height: auto;
+      max-height: none;
+    }
+
+    /* 6 카드 — 2열 */
+    .feature-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .feature-card { padding: 14px 12px; }
+    .feature-card .name { font-size: 13px; }
+    .feature-card .desc { font-size: 11px; }
+
+    /* 비교 그리드 → 세로 */
+    .compare-grid { grid-template-columns: 1fr; gap: 12px; }
+    .compare-col { padding: 14px 16px; }
+    .compare-col li { font-size: 12px; }
+
+    /* 카카오 → 세로 */
+    .kakao-steps { grid-template-columns: 1fr; gap: 8px; }
+    .kakao-step { padding: 14px 12px; }
+
+    /* 4단계 그리드 — 그대로 4열 */
+    .flow-grid { gap: 4px; }
+    .flow-item {
+      font-size: 10px;
+      padding: 8px 4px;
+    }
+    .flow-item .num { font-size: 14px; }
+
+    /* 표 */
+    table { font-size: 11px; }
+    table th, table td { padding: 8px 10px; }
+
+    /* STEP 배지 */
+    .step-badge {
+      font-size: 9px;
+      padding: 3px 10px;
+      margin-right: 10px;
+    }
+
+    .small { font-size: 11px; }
+
+    .page-header { padding: 20px 16px 4px; }
+    .page-header .title-mini { font-size: 11px; }
+  }
+
+  /* 매우 작은 화면 */
+  @media (max-width: 380px) {
+    .cover h1 { font-size: 24px; }
+    .key-message .quote-text { font-size: 18px; }
+    .section-cover h1 { font-size: 20px; }
+    .feature-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="title-mini">세종성베드로성당 · 홈페이지 운영 제안</div>
+</header>
+
+<!-- 1. 표지 -->
+<div class="slide cover" id="s1">
+  <span class="slide-num">01</span>
+  <div class="split">
+    <div class="left">
+      <div class="eyebrow">제 안 서</div>
+      <h1>본당 홈페이지<br>운영 제안</h1>
+      <p class="sub-title">세종성베드로성당</p>
+      <div class="divider"></div>
+      <p class="lede">홈페이지 운영을 시작했을 때 본당 사목과 운영이 어떻게 거들어질 수 있는지, 준비된 기능과 동작 시나리오를 정리해 말씀드리고자 합니다.</p>
+      <p class="meta">2026 · A · D ·</p>
+    </div>
+    <div class="right">
+      <div class="cover-deco">
+        <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="160" cy="160" r="140" fill="none" stroke="#b8924a" stroke-width="0.5" stroke-dasharray="2 6" opacity="0.5"/>
+          <circle cx="160" cy="160" r="110" fill="none" stroke="#e8e3d6" stroke-width="1"/>
+          <circle cx="160" cy="160" r="80" fill="none" stroke="#e8e3d6" stroke-width="1"/>
+          <g class="float-anim">
+            <rect x="125" y="160" width="70" height="80" fill="#fdfcf9" stroke="#1a2745" stroke-width="1.5"/>
+            <path d="M 120 160 L 160 120 L 200 160 Z" fill="#1a2745"/>
+            <rect x="155" y="85" width="10" height="35" fill="#1a2745"/>
+            <path d="M 152 85 L 160 68 L 168 85 Z" fill="#1a2745"/>
+            <line x1="160" y1="68" x2="160" y2="52" stroke="#b8924a" stroke-width="2"/>
+            <line x1="154" y1="59" x2="166" y2="59" stroke="#b8924a" stroke-width="2"/>
+            <path d="M 140 190 Q 140 178 148 178 Q 156 178 156 190 L 156 210 L 140 210 Z" fill="#b8924a" opacity="0.85"/>
+            <path d="M 164 190 Q 164 178 172 178 Q 180 178 180 190 L 180 210 L 164 210 Z" fill="#b8924a" opacity="0.85"/>
+            <path d="M 152 240 Q 152 225 160 225 Q 168 225 168 240 L 168 240 L 152 240 Z" fill="#1a2745"/>
+          </g>
+          <circle cx="160" cy="40" r="3" fill="#b8924a" class="pulse-anim"/>
+          <circle cx="50" cy="160" r="2" fill="#b8924a" class="pulse-anim" style="animation-delay: 0.8s"/>
+          <circle cx="270" cy="160" r="2" fill="#b8924a" class="pulse-anim" style="animation-delay: 1.6s"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. 한 줄 핵심 -->
+<div class="slide" id="s2">
+  <span class="slide-num">02</span>
+  <div class="key-message">
+    <div class="mark">제안의 핵심</div>
+    <p class="quote-text">주보 하나 올리면,<br>나머지는 시스템이 거들 수 있습니다.</p>
+    <p class="sub-line">운영을 시작했을 때, 매주의 주보가 홈페이지의 여러 자리로<br>자연스럽게 흘러 들어가도록 준비되어 있습니다.</p>
+  </div>
+</div>
+
+<!-- 3. 들어가며 -->
+<div class="slide" id="s3">
+  <span class="slide-num">03</span>
+  <div class="single-col">
+    <h1>들어가며</h1>
+    <p>홈페이지는 본당 사목과 운영을 <strong>거드는 보조 수단</strong>으로 자리합니다.</p>
+    <p>본당의 일들은 성전과 공동체 안에서 이루어지고, 홈페이지는 그 일들을 <strong>알리고 기록하고 다시 찾을 수 있게</strong> 돕는 자리에 두려고 합니다.</p>
+    <p>이 자료는 홈페이지 <strong>운영을 시작했을 때 하게 될 일</strong>을 차분히 정리해 말씀드리는 것을 목적으로 합니다.</p>
+  </div>
+</div>
+
+<!-- 4. 1부 표지 -->
+<div class="slide" id="s4">
+  <span class="slide-num">04</span>
+  <div class="section-cover">
+    <div class="chapter-mark">1 부</div>
+    <h1>운영의 그림</h1>
+    <div class="divider"></div>
+    <p class="sub">홈페이지가 거들 수 있는 여섯 가지 자리</p>
+  </div>
+</div>
+
+<!-- 5. 매주 반복되는 일과 -->
+<div class="slide" id="s5">
+  <span class="slide-num">05</span>
+  <div class="single-col">
+    <h1>매주 반복되는 일과</h1>
+    <p>매주 본당에서 반복되는 일들이 홈페이지 운영을 통해 어떻게 거들어질 수 있는지 짚어 봅니다.</p>
+    <div class="compare-grid">
+      <div class="compare-col">
+        <div class="compare-col-label">이전</div>
+        <ul>
+          <li>주보의 공지·행사·모임을 따로따로 옮겨 적기</li>
+          <li>관심 있는 분과·단체 소식을 일일이 챙기기 어려움</li>
+          <li>지난 자료를 다시 찾기 번거로움</li>
+          <li>새 성전 건축 진행을 한자리에서 보기 어려움</li>
+        </ul>
+      </div>
+      <div class="compare-col after">
+        <div class="compare-col-label">운영 후</div>
+        <ul>
+          <li>주보 PDF 한 부를 올리면 자리에 맞게 자동 정리</li>
+          <li>관심 분과·단체 선택만으로 소식이 닿게 됨</li>
+          <li>연도별로 누적되어 다시 찾기 쉬워짐</li>
+          <li>건축공사일지가 한자리에 차곡차곡 쌓이게 됨</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. 여섯 기능 한눈에 -->
+<div class="slide" id="s6">
+  <span class="slide-num">06</span>
+  <div class="single-col">
+    <h1>여섯 가지 기능 한눈에</h1>
+    <div class="feature-grid">
+      <div class="feature-card"><div class="num">01</div><div class="name">오늘의 말씀과 묵상</div><div class="desc">매일의 복음을 첫 화면에서</div></div>
+      <div class="feature-card"><div class="num">02</div><div class="name">건축공사일지</div><div class="desc">단계별 진행과 한 줄 기록</div></div>
+      <div class="feature-card"><div class="num">03</div><div class="name">내 관심 분과·단체</div><div class="desc">선택한 활동의 소식이 닿도록</div></div>
+      <div class="feature-card"><div class="num">04</div><div class="name">주보 AI 추출</div><div class="desc">공지·행사·모임을 자동 정리</div></div>
+      <div class="feature-card"><div class="num">05</div><div class="name">본당 역사 저장소</div><div class="desc">기록이 한자리에 쌓이도록</div></div>
+      <div class="feature-card"><div class="num">06</div><div class="name">안전한 보관</div><div class="desc">맡겨진 정보를 안심하고</div></div>
+    </div>
+    <p class="small">함께 준비 중인 <strong>카카오 채널 연동</strong>도 이어서 소개드립니다.</p>
+  </div>
+</div>
+
+<!-- 7. ① 오늘의 말씀 -->
+<div class="slide" id="s7">
+  <span class="slide-num">07</span>
+  <div class="split">
+    <div class="left">
+      <h1>① 오늘의 말씀과 묵상</h1>
+      <ul>
+        <li>홈페이지 <strong>첫 화면</strong>에서 매일의 복음 말씀을 바로 만날 수 있도록 마련되어 있습니다.</li>
+        <li>묵상 글이 일정 주기로 자동으로 바뀌어, 따로 찾지 않아도 자연스레 눈에 들어오도록 설계되어 있습니다.</li>
+        <li>본당에 방문하지 못한 날에도 말씀 한 구절을 만나도록 돕는 자리가 될 예정입니다.</li>
+      </ul>
+    </div>
+    <div class="right">
+      <div class="shot-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">sejongstpeter / 홈</span>
+        </div>
+        <img src="screenshots/01-word-meditation.jpg" alt="오늘의 말씀과 묵상이 보이는 홈 화면">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 8. ② 건축공사일지 -->
+<div class="slide" id="s8">
+  <span class="slide-num">08</span>
+  <div class="split">
+    <div class="left">
+      <h1>② 건축공사일지</h1>
+      <ul>
+        <li>새 성전 건축의 진행 과정을 <strong>단계별 마일스톤</strong>과 <strong>한 줄 일지</strong>로 남길 수 있게 됩니다.</li>
+        <li>각 단계의 진행률과 사진이 함께 누적되어, 시간이 지난 뒤에도 흐름을 다시 따라갈 수 있도록 설계되어 있습니다.</li>
+        <li>공동체가 함께 보낸 시간이 자료로 차곡차곡 보관될 예정입니다.</li>
+      </ul>
+    </div>
+    <div class="right">
+      <div class="shot-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">admin / 성전 건축 관리</span>
+        </div>
+        <img src="screenshots/02-construction-log.jpg" alt="성전 건축 관리 단계 마일스톤 화면">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 9. ③ 내 관심 분과·단체 -->
+<div class="slide" id="s9">
+  <span class="slide-num">09</span>
+  <div class="split">
+    <div class="left">
+      <h1>③ 내 관심 분과·단체</h1>
+      <ul>
+        <li>회원이 관심 있는 <strong>분과와 단체</strong>를 홈페이지에서 직접 선택할 수 있도록 마련되어 있습니다.</li>
+        <li>단체를 선택하면 소속 <strong>분과가 자동으로 함께 포함</strong>되도록 설계되어 있습니다.</li>
+        <li>선택한 분과·단체의 공지와 일정이 본인에게 닿도록 연결될 예정입니다.</li>
+      </ul>
+    </div>
+    <div class="right">
+      <div class="shot-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">관심 분과·단체 선택</span>
+        </div>
+        <img src="screenshots/03-member-interests.jpg" alt="관심 분과 단체 선택 화면">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 10. ④ 주보 AI 추출 -->
+<div class="slide" id="s10">
+  <span class="slide-num">10</span>
+  <div class="split">
+    <div class="left">
+      <h1>④ 주보 AI 추출</h1>
+      <ul>
+        <li>매주 발행되는 <strong>주보 PDF</strong>를 업로드하면, AI가 본문을 자동으로 살펴보도록 마련되어 있습니다.</li>
+        <li><strong>공지·행사·모임</strong>이 자동으로 분류되어 홈페이지의 알맞은 자리로 이동하도록 설계되어 있습니다.</li>
+        <li>분류된 결과는 관리자가 한 번 더 확인한 뒤 공개되는 흐름으로 운영될 예정입니다.</li>
+      </ul>
+    </div>
+    <div class="right">
+      <div class="shot-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">admin / 주보 AI 추출 결과</span>
+        </div>
+        <img src="screenshots/04-bulletin-upload.jpg" alt="주보 AI 추출 결과 화면">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 11. ⑤ 본당 역사 저장소 -->
+<div class="slide" id="s11">
+  <span class="slide-num">11</span>
+  <div class="split">
+    <div class="left">
+      <h1>⑤ 본당 역사 저장소 역할</h1>
+      <ul>
+        <li>주보·공지·행사·사진이 홈페이지 안에 <strong>연도별로 누적</strong>되도록 설계되어 있습니다.</li>
+        <li>시간이 지난 뒤에도 그 시기의 본당 활동을 다시 찾아볼 수 있을 것입니다.</li>
+        <li>흩어지기 쉬운 기록을 <strong>한자리에 보관</strong>하는 자리로 자리잡게 됩니다.</li>
+      </ul>
+    </div>
+    <div class="right">
+      <div class="shot-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">admin / 본당 행사·모임 일정</span>
+        </div>
+        <img src="screenshots/05-archive.jpg" alt="본당 행사 모임 일정 누적 화면">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 12. ⑥ 안전한 보관 -->
+<div class="slide" id="s12">
+  <span class="slide-num">12</span>
+  <div class="split">
+    <div class="left">
+      <h1>⑥ 안전한 보관</h1>
+      <ul>
+        <li>회원이 남겨주실 정보는 <strong>안전하게 보관</strong>되도록 마련되어 있습니다.</li>
+        <li>관리 화면은 <strong>권한을 가진 사람</strong>만 접근할 수 있도록 설계되어 있습니다.</li>
+        <li>본당의 기록은 <strong>정기적으로 보존</strong>되는 흐름으로 운영될 예정입니다.</li>
+      </ul>
+      <p>홈페이지에 맡겨질 정보가 안심하고 머무를 수 있는 환경을 마련해 두었습니다.</p>
+    </div>
+    <div class="right">
+      <div class="shot-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">마이페이지</span>
+        </div>
+        <img src="screenshots/06-kakao.jpg" alt="마이페이지 — 회원 정보가 보관되는 자리">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 13. 2부 표지 -->
+<div class="slide" id="s13">
+  <span class="slide-num">13</span>
+  <div class="section-cover">
+    <div class="chapter-mark">2 부</div>
+    <h1>두 가지 동작 시나리오</h1>
+    <div class="divider"></div>
+    <p class="sub">운영을 시작했을 때, 홈페이지가<br>실제로 어떻게 움직일지 미리 살펴봅니다</p>
+  </div>
+</div>
+
+<!-- 14. 흐름 1 개요 -->
+<div class="slide" id="s14">
+  <span class="slide-num">14</span>
+  <div class="single-col">
+    <h1>시나리오 하나 — 회원의 알림 수신</h1>
+    <p>회원이 홈페이지에 가입한 순간부터 카카오 알림을 받기까지의 네 단계로 동작할 예정입니다.</p>
+    <div class="flow-grid">
+      <div class="flow-item"><span class="num">①</span>회원가입</div>
+      <div class="flow-item"><span class="num">②</span>첫 로그인</div>
+      <div class="flow-item"><span class="num">③</span>관심 분과·단체 선택</div>
+      <div class="flow-item"><span class="num">④</span>카카오 알림 수신</div>
+    </div>
+    <p class="small">카카오 알림은 <strong>채널 개설 후 활성화</strong>되는 흐름으로 준비되어 있습니다.</p>
+  </div>
+</div>
+
+<!-- 15. 흐름1 STEP1 -->
+<div class="slide" id="s15">
+  <span class="slide-num">15</span>
+  <div class="split">
+    <div class="left">
+      <h1><span class="step-badge">STEP 1</span>회원가입</h1>
+      <div class="flow-grid">
+        <div class="flow-item active"><span class="num">①</span>회원가입</div>
+        <div class="flow-item"><span class="num">②</span>첫 로그인</div>
+        <div class="flow-item"><span class="num">③</span>관심 선택</div>
+        <div class="flow-item"><span class="num">④</span>카카오 알림</div>
+      </div>
+      <ul>
+        <li>회원이 홈페이지에서 <strong>회원가입</strong>을 진행하도록 마련됩니다.</li>
+        <li>이메일·이름·세례명·전화번호를 입력하게 됩니다.</li>
+        <li>채널 알림을 받고자 하시면 <strong>알림 동의</strong>를 함께 선택하실 수 있습니다.</li>
+      </ul>
+    </div>
+    <div class="right">
+      <div class="shot-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">members / 회원가입</span>
+        </div>
+        <img src="screenshots/flow1-step1-signup.jpg" alt="회원가입 폼 화면">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 16. 흐름1 STEP2 -->
+<div class="slide" id="s16">
+  <span class="slide-num">16</span>
+  <div class="split">
+    <div class="left">
+      <h1><span class="step-badge">STEP 2</span>첫 로그인</h1>
+      <div class="flow-grid">
+        <div class="flow-item"><span class="num">①</span>회원가입</div>
+        <div class="flow-item active"><span class="num">②</span>첫 로그인</div>
+        <div class="flow-item"><span class="num">③</span>관심 선택</div>
+        <div class="flow-item"><span class="num">④</span>카카오 알림</div>
+      </div>
+      <ul>
+        <li>가입한 계정으로 <strong>첫 로그인</strong>을 하게 됩니다.</li>
+        <li>이메일 로그인 외에 <strong>Google·카카오</strong>로도 들어올 수 있도록 마련될 예정입니다.</li>
+        <li>로그인 직후, 관심 분과·단체를 선택할 수 있는 안내가 자연스럽게 이어지도록 설계되어 있습니다.</li>
+      </ul>
+    </div>
+    <div class="right">
+      <div class="shot-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">members / 로그인</span>
+        </div>
+        <img src="screenshots/flow1-step2.jpg" alt="회원 로그인 화면">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 17. 흐름1 STEP3 -->
+<div class="slide" id="s17">
+  <span class="slide-num">17</span>
+  <div class="split">
+    <div class="left">
+      <h1><span class="step-badge">STEP 3</span>관심 분과·단체 선택</h1>
+      <div class="flow-grid">
+        <div class="flow-item"><span class="num">①</span>회원가입</div>
+        <div class="flow-item"><span class="num">②</span>첫 로그인</div>
+        <div class="flow-item active"><span class="num">③</span>관심 선택</div>
+        <div class="flow-item"><span class="num">④</span>카카오 알림</div>
+      </div>
+      <ul>
+        <li>본당의 <strong>분과·단체 목록</strong>에서 관심 있는 곳을 선택하실 수 있습니다.</li>
+        <li>단체를 선택하면 그 단체가 속한 <strong>분과가 자동으로 함께 포함</strong>되도록 설계되어 있습니다.</li>
+        <li>언제든 마이페이지에서 다시 바꿀 수 있도록 마련될 예정입니다.</li>
+      </ul>
+    </div>
+    <div class="right">
+      <div class="shot-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">관심 분과·단체 수정</span>
+        </div>
+        <img src="screenshots/flow1-step3.jpg" alt="관심 분과 단체 선택 체크박스">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 18. 흐름1 STEP4 -->
+<div class="slide" id="s18">
+  <span class="slide-num">18</span>
+  <div class="split">
+    <div class="left">
+      <h1><span class="step-badge">STEP 4</span>카카오 알림 수신</h1>
+      <div class="flow-grid">
+        <div class="flow-item"><span class="num">①</span>회원가입</div>
+        <div class="flow-item"><span class="num">②</span>첫 로그인</div>
+        <div class="flow-item"><span class="num">③</span>관심 선택</div>
+        <div class="flow-item active"><span class="num">④</span>카카오 알림</div>
+      </div>
+      <ul>
+        <li>선택한 분과·단체의 공지와 일정이 등록되면, 본당 <strong>카카오 채널</strong>로 알림이 전달되도록 설계되어 있습니다.</li>
+        <li>마이페이지의 <strong>알림 받기</strong> 항목으로 받기·받지 않기를 직접 조절하실 수 있습니다.</li>
+        <li>알림은 <strong>채널 개설 후 활성화</strong>되며, 그 전까지 동의만 미리 받아 두는 흐름으로 운영될 예정입니다.</li>
+      </ul>
+    </div>
+    <div class="right">
+      <div class="shot-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">마이페이지 / 관심 분과 + 알림</span>
+        </div>
+        <img src="screenshots/flow1-step4.jpg" alt="마이페이지 관심 분과 칩과 카카오 알림 동의">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 19. 흐름 2 개요 -->
+<div class="slide" id="s19">
+  <span class="slide-num">19</span>
+  <div class="single-col">
+    <h1>시나리오 둘 — 운영자의 주보 처리</h1>
+    <p>업로드한 주보 한 부가 홈페이지의 여러 자리로 정리되어 들어가는 네 단계로 동작할 예정입니다.</p>
+    <div class="flow-grid">
+      <div class="flow-item"><span class="num">①</span>주보 PDF 입력</div>
+      <div class="flow-item"><span class="num">②</span>AI 분석</div>
+      <div class="flow-item"><span class="num">③</span>자동 분류·이동</div>
+      <div class="flow-item"><span class="num">④</span>관리자 검수·공개</div>
+    </div>
+    <p class="small">PDF 원본은 그대로 보관되어 언제든 다시 열어볼 수 있도록 마련되어 있습니다.</p>
+  </div>
+</div>
+
+<!-- 20. 흐름2 STEP1 -->
+<div class="slide" id="s20">
+  <span class="slide-num">20</span>
+  <div class="split">
+    <div class="left">
+      <h1><span class="step-badge">STEP 1</span>주보 PDF 입력</h1>
+      <div class="flow-grid">
+        <div class="flow-item active"><span class="num">①</span>PDF 입력</div>
+        <div class="flow-item"><span class="num">②</span>AI 분석</div>
+        <div class="flow-item"><span class="num">③</span>자동 분류</div>
+        <div class="flow-item"><span class="num">④</span>검수·공개</div>
+      </div>
+      <ul>
+        <li>매주 발행되는 <strong>주보 PDF</strong>를 관리자 화면에 업로드하게 됩니다.</li>
+        <li>발행일을 입력하면 <strong>복음 구절</strong>이 자동으로 가져와지도록 설계되어 있습니다.</li>
+        <li>호수와 전례 시기가 함께 기록되어 아카이브에 정확히 꽂히도록 마련되어 있습니다.</li>
+      </ul>
+    </div>
+    <div class="right">
+      <div class="shot-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">admin / 주보 업로드</span>
+        </div>
+        <img src="screenshots/flow2-step1.jpg" alt="주보 PDF 업로드 폼">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 21. 흐름2 STEP2 -->
+<div class="slide" id="s21">
+  <span class="slide-num">21</span>
+  <div class="split">
+    <div class="left">
+      <h1><span class="step-badge">STEP 2</span>AI 분석</h1>
+      <div class="flow-grid">
+        <div class="flow-item"><span class="num">①</span>PDF 입력</div>
+        <div class="flow-item active"><span class="num">②</span>AI 분석</div>
+        <div class="flow-item"><span class="num">③</span>자동 분류</div>
+        <div class="flow-item"><span class="num">④</span>검수·공개</div>
+      </div>
+      <ul>
+        <li>업로드된 주보의 본문과 표를 <strong>AI가 한 장씩 읽어</strong> 정리하도록 설계되어 있습니다.</li>
+        <li>텍스트와 이미지 정보가 모두 분석 대상이 됩니다.</li>
+        <li>분석에는 보통 1~2분 정도 시간이 걸리도록 마련되어 있습니다.</li>
+      </ul>
+    </div>
+    <div class="right">
+      <div class="shot-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">admin / 주보 업로드 (AI 분석 중)</span>
+        </div>
+        <img src="screenshots/flow2-step2.jpg" alt="주보 업로드 완료 후 AI 분석 중 화면">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 22. 흐름2 STEP3 -->
+<div class="slide" id="s22">
+  <span class="slide-num">22</span>
+  <div class="split">
+    <div class="left">
+      <h1><span class="step-badge">STEP 3</span>자동 분류·이동</h1>
+      <div class="flow-grid">
+        <div class="flow-item"><span class="num">①</span>PDF 입력</div>
+        <div class="flow-item"><span class="num">②</span>AI 분석</div>
+        <div class="flow-item active"><span class="num">③</span>자동 분류</div>
+        <div class="flow-item"><span class="num">④</span>검수·공개</div>
+      </div>
+      <ul>
+        <li>분석 결과는 <strong>공지 · 행사 · 모임</strong>으로 자동 분류되도록 설계되어 있습니다.</li>
+        <li>각 항목은 홈페이지 안의 알맞은 자리로 이동하게 됩니다.</li>
+        <li>날짜 정보가 부족한 항목은 별도 <strong>임시 보관함</strong>으로 분리되도록 마련되어 있습니다.</li>
+      </ul>
+    </div>
+    <div class="right">
+      <div class="shot-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">admin / 주보 AI 추출 결과</span>
+        </div>
+        <img src="screenshots/flow2-step3.jpg" alt="주보 AI 추출 결과 — 공지 분류">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 23. 흐름2 STEP4 -->
+<div class="slide" id="s23">
+  <span class="slide-num">23</span>
+  <div class="split">
+    <div class="left">
+      <h1><span class="step-badge">STEP 4</span>관리자 검수·공개</h1>
+      <div class="flow-grid">
+        <div class="flow-item"><span class="num">①</span>PDF 입력</div>
+        <div class="flow-item"><span class="num">②</span>AI 분석</div>
+        <div class="flow-item"><span class="num">③</span>자동 분류</div>
+        <div class="flow-item active"><span class="num">④</span>검수·공개</div>
+      </div>
+      <ul>
+        <li>자동 분류된 항목들을 <strong>관리자가 한 번 더 확인</strong>하게 됩니다.</li>
+        <li>내용이 맞으면 그대로 공개하고, 필요한 경우 손을 본 뒤 공개하는 흐름으로 운영됩니다.</li>
+        <li>AI가 만든 항목임을 알리는 <strong>표지</strong>가 함께 붙어, 검수 이력이 분명히 드러나도록 설계되어 있습니다.</li>
+      </ul>
+    </div>
+    <div class="right">
+      <div class="shot-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">admin / 등록 완료</span>
+        </div>
+        <img src="screenshots/flow2-step3.jpg" alt="주보 AI 추출 결과 — notices 등록 완료 표시">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 24. 3부 표지 -->
+<div class="slide" id="s24">
+  <span class="slide-num">24</span>
+  <div class="section-cover">
+    <div class="chapter-mark">3 부</div>
+    <h1>함께 준비할 일</h1>
+    <div class="divider"></div>
+    <p class="sub">운영을 시작하기 전 함께 결정해 두면 좋을 사항들</p>
+  </div>
+</div>
+
+<!-- 25. 카카오 채널 -->
+<div class="slide" id="s25">
+  <span class="slide-num">25</span>
+  <div class="single-col">
+    <h1>카카오 채널 연동 준비</h1>
+    <p>본당 <strong>카카오 채널</strong>이 개설되면, 회원이 선택한 관심 분과·단체의 공지와 일정이 채널로 안내될 수 있도록 준비되어 있습니다.</p>
+    <div class="kakao-steps">
+      <div class="kakao-step">
+        <div class="n">①</div>
+        <div class="nm">채널 개설</div>
+        <div class="desc">본당 명의로<br>카카오 비즈니스 채널 개설</div>
+      </div>
+      <div class="kakao-step">
+        <div class="n">②</div>
+        <div class="nm">연동 설정</div>
+        <div class="desc">홈페이지와 채널 사이의<br>연결 마무리</div>
+      </div>
+      <div class="kakao-step">
+        <div class="n">③</div>
+        <div class="nm">알림 발신 시작</div>
+        <div class="desc">동의한 회원에게<br>관심 분과·단체 알림 발신</div>
+      </div>
+    </div>
+    <p class="small">현재 회원 화면에는 <strong>알림 받기 동의</strong>가 이미 마련되어 있어, 채널 개설이 끝나는 대로 활성화될 수 있습니다.</p>
+  </div>
+</div>
+
+<!-- 26. 운영 시작 시 결정 사항 -->
+<div class="slide" id="s26">
+  <span class="slide-num">26</span>
+  <div class="single-col">
+    <h1>운영 시작에 앞서 정해 두면 좋을 사항</h1>
+    <ul>
+      <li>주보 PDF를 <strong>매주 업로드할 담당자</strong>를 정해 두는 일</li>
+      <li>AI 분류 결과를 <strong>검수·공개하는 담당자</strong>를 정해 두는 일</li>
+      <li>건축공사일지에 한 줄 일지를 남길 <strong>담당자와 주기</strong>를 정해 두는 일</li>
+      <li>카카오 채널 <strong>개설 일정</strong>을 정해 두는 일</li>
+    </ul>
+    <p>이 사항들이 정해지면, 홈페이지 운영은 매주 같은 자리에서 같은 흐름으로 거들 수 있게 됩니다.</p>
+  </div>
+</div>
+
+<!-- 27. 한 페이지 요약 -->
+<div class="slide" id="s27">
+  <span class="slide-num">27</span>
+  <div class="single-col">
+    <h1>한 페이지로 정리</h1>
+    <table>
+      <thead><tr><th style="width: 22%;">구분</th><th>운영을 시작했을 때 홈페이지가 거들게 될 일</th></tr></thead>
+      <tbody>
+        <tr><td><strong>매일</strong></td><td>오늘의 말씀과 묵상이 첫 화면에 자리하게 됩니다</td></tr>
+        <tr><td><strong>매주</strong></td><td>주보 PDF 한 부 업로드 → 공지·행사·모임 자동 정리</td></tr>
+        <tr><td><strong>회원</strong></td><td>관심 분과·단체 선택 → 카카오 채널 알림 (개설 후)</td></tr>
+        <tr><td><strong>기록</strong></td><td>건축공사일지 · 본당 역사 저장소로 누적</td></tr>
+      </tbody>
+    </table>
+    <p class="small">홈페이지는 본당 사목과 운영을 거드는 <strong>보조 수단</strong>으로 자리합니다.</p>
+  </div>
+</div>
+
+<!-- 28. 닫는 슬라이드 -->
+<div class="slide" id="s28">
+  <span class="slide-num">28</span>
+  <div class="key-message">
+    <div class="mark">감 사 합 니 다</div>
+    <p class="quote-text">주보 하나 올리면,<br>나머지는 시스템이 거들 수 있습니다.</p>
+    <p class="sub-line">세종성베드로성당 · 2026</p>
+  </div>
+</div>
+
+<footer class="page-footer">
+  세종성베드로성당 · 본당 홈페이지 운영 제안 · 2026
+</footer>
+
+<!-- 이미지 데이터 -->
+
+
+<script>
+  // 외부 이미지 사용 — 주입 JS 불필요
+
+  // 페이드인 효과 제거됨 — 슬라이드는 CSS만으로 항상 표시
+</script>
+
+</body>
+</html>
